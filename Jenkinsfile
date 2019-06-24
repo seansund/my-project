@@ -29,6 +29,7 @@ podTemplate(
             secretEnvVar(key: 'CLUSTER_NAME', secretName: 'ibmcloud-apikey', secretKey: 'cluster_name'),
             envVar(key: 'CHART_NAME', value: 'template-node-typescript'),
             envVar(key: 'CHART_ROOT', value: 'chart'),
+            envVar(key: 'TMP_DIR', value: '.tmp'),
             envVar(key: 'HOME', value: '/root'), // needed for the ibmcloud cli to find plugins
          ],
       ),
@@ -145,6 +146,7 @@ podTemplate(
 
                     CHART_PATH="${CHART_ROOT}/${CHART_NAME}"
 
+                    mkdir -p ${TMP_DIR}
                     ibmcloud -version
 
                     ibmcloud login -a ${APIURL} --apikey ${APIKEY} -g ${RESOURCE_GROUP} -r ${REGION}
