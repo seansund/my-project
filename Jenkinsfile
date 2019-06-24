@@ -43,32 +43,32 @@ podTemplate(
         container(name: 'node', shell: '/bin/bash') {
             checkout scm
             stage('Setup') {
-                sh '''
+                sh '''#!/bin/bash
                     # Export project name, version, and build number to ./env-config
                     npm run env | grep "^npm_package_name" | sed "s/npm_package_name/IMAGE_NAME/g"  > ./env-config
                     npm run env | grep "^npm_package_version" | sed "s/npm_package_version/IMAGE_VERSION/g" >> ./env-config
                 '''
             }
             stage('Build') {
-                sh '''
+                sh '''#!/bin/bash
                     npm install
                     npm run build
                 '''
             }
             stage('Test') {
-                sh '''
+                sh '''#!/bin/bash
                     npm test
                 '''
             }
             stage('Verify pact') {
-                sh '''
+                sh '''#!/bin/bash
                     npm run pact:verify
                 '''
             }
         }
         container(name: 'ibmcloud', shell: '/bin/bash') {
             stage('Verify environment') {
-                sh '''
+                sh '''#!/bin/bash
                     . ./env-config
 
                     if [[ -z "${APIKEY}" ]]; then
@@ -108,8 +108,9 @@ podTemplate(
                 '''
             }
             stage('Build image') {
-                sh '''
+                sh '''#!/bin/bash
                     . ./env-config
+                    BUILD_NUMBER="${env.BUILD_NUMBER}"
 
                     ibmcloud login -a ${APIURL} --apikey ${APIKEY} -r ${REGION} -g ${RESOURCE_GROUP}
                     
@@ -139,10 +140,11 @@ podTemplate(
                 '''
             }
             stage('Deploy to DEV env') {
-                sh '''
+                sh '''#!/bin/bash
                     . ./env-config
                     
                     ENVIRONMENT_NAMESPACE=dev
+                    BUILD_NUMBER="${env.BUILD_NUMBER}"
 
                     CHART_PATH="${CHART_ROOT}/${CHART_NAME}"
 
