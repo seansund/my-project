@@ -30,6 +30,7 @@ podTemplate(
             envVar(key: 'CHART_NAME', value: 'template-node-typescript'),
             envVar(key: 'CHART_ROOT', value: 'chart'),
             envVar(key: 'TMP_DIR', value: '.tmp'),
+            envVar(key: 'BUILD_NUMBER', value: "${env.BUILD_NUMBER}"),
             envVar(key: 'HOME', value: '/root'), // needed for the ibmcloud cli to find plugins
          ],
       ),
@@ -110,7 +111,6 @@ podTemplate(
             stage('Build image') {
                 sh '''#!/bin/bash
                     . ./env-config
-                    BUILD_NUMBER="${env.BUILD_NUMBER}"
 
                     ibmcloud login -a ${APIURL} --apikey ${APIKEY} -r ${REGION} -g ${RESOURCE_GROUP}
                     
@@ -144,7 +144,6 @@ podTemplate(
                     . ./env-config
                     
                     ENVIRONMENT_NAMESPACE=dev
-                    BUILD_NUMBER="${env.BUILD_NUMBER}"
 
                     CHART_PATH="${CHART_ROOT}/${CHART_NAME}"
 
