@@ -155,7 +155,7 @@ podTemplate(
                     ibmcloud config --check-version=false
                     ibmcloud cs cluster-config --cluster ${CLUSTER_NAME} --export > ${TMP_DIR}/.kubeconfig
 
-                    source ${TMP_DIR}/.kubeconfig
+                    . ${TMP_DIR}/.kubeconfig
 
                     echo "KUBECONFIG=${KUBECONFIG}"
 
