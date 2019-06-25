@@ -143,7 +143,7 @@ podTemplate(
                 sh '''#!/bin/bash
                     . ./env-config
                     
-                    ENVIRONMENT_NAMESPACE=dev
+                    ENVIRONMENT_NAME=dev
 
                     CHART_PATH="${CHART_ROOT}/${CHART_NAME}"
 
